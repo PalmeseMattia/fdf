@@ -4,6 +4,7 @@
 #include <mlx.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 #define WIDTH 1920
 #define HEIGHT 1080
@@ -55,5 +56,6 @@ t_pixel	get_pixel(unsigned char *p_pixel);
 void 	draw_pixel(t_context context, t_point point, int color);
 void 	draw_line(t_context context, t_point point0, t_point point1);
 void 	draw_map(t_context context);
+t_point	project_point(t_point point, float fov);
 
 #endif

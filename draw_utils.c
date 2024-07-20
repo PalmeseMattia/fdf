@@ -58,6 +58,17 @@ void draw_line(t_context context, t_point point0, t_point point1)
 	}
 }
 
+t_point	project_point(t_point point, float fov)
+{
+	t_point	result;
+	float	dividend;
+
+	result.x = WIDTH / 2 + (fov * point.x) / (fov + point.z);
+	result.y = HEIGHT / 2 + (fov * point.y) / (fov + point.z);
+	result.z = point.z;
+	return (result);
+}
+
 void draw_map(t_context context)
 {
 	t_map map = context.map;

@@ -62,6 +62,7 @@ int main()
 
 	//ITERATE MAP AND DRAW POINTS
 	draw_map(context);
+	
 
 	//DRAW IMAGE
 	mlx_put_image_to_window(context.mlx, context.win, context.image, 0, 0);

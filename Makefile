@@ -3,7 +3,7 @@ CC = cc
 FLAGS = #-Wall -Wextra -Werror
 DEBUG_FLAGS = -g
 
-SRCS = main.c draw_utils.c
+SRCS = cube.c draw_utils.c
 OBJS = $(SRCS:.c=.o)
 
 EXEC = fdf
