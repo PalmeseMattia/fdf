@@ -63,8 +63,8 @@ t_point	project_point(t_point point, float fov)
 	t_point	result;
 	float	dividend;
 
-	result.x = WIDTH / 2 + (fov * point.x) / (fov + point.z);
-	result.y = HEIGHT / 2 + (fov * point.y) / (fov + point.z);
+	result.x = (WIDTH / 2) + (fov * point.x) / (fov + point.z);
+	result.y = (HEIGHT / 2) + (fov * point.y) / (fov + point.z);
 	result.z = point.z;
 	return (result);
 }
