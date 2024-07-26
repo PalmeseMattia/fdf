@@ -1,9 +1,15 @@
 #include "fdf.h"
 
-#define HEIGHT 1080
-#define WIDTH 1920
 #define ESC 65307
 #define ON_DESTROY 17
+
+#define UP 65362
+#define DOWN 65364
+#define LEFT 65361
+#define RIGHT 65363
+
+#define W 119
+#define S 115
 
 int key_hook(int keycode, t_context *context)
 {
@@ -12,6 +18,20 @@ int key_hook(int keycode, t_context *context)
 	{
 		mlx_destroy_window(context->mlx, context->win);
 		exit(EXIT_SUCCESS);
+	}
+	else if (keycode == UP)
+		context -> camera.y -= 40;
+	else if (keycode == DOWN)
+		context -> camera.y += 40;
+	else if (keycode == LEFT)
+		context -> camera.x -= 40;
+	else if (keycode == RIGHT)
+		context -> camera.x += 40;
+	else if (keycode == W)
+		context -> camera.distance += 50;
+	else if (keycode == S) {
+		if (context -> camera.distance > 0)
+			context -> camera.distance -= 20;
 	}
 	return 0;
 }
@@ -88,9 +108,14 @@ int loop_hook(t_context *context)
 		p.y += center.y;
 		p.z += center.z;
 
-		points[i] = project_point(p, 200.0);
+		// Add camera setoff
+		p.x += context -> camera.x;
+		p.y += context -> camera.y;
+		p.z += context -> camera.z;
+		
+		points[i] = project_point(p, context -> camera.distance);
 
-		printf("I: %d X: %d Y: %d Z: %d\n", i, points[i].x, points[i].y, points[i].z);
+		//printf("I: %d X: %d Y: %d Z: %d\n", i, points[i].x, points[i].y, points[i].z);
 	}
 
 	// Draw cube edges
@@ -148,6 +173,7 @@ int main()
 	points[7] = (t_point){.x = 200, .y = 200, .z = 200};
 
 	context.map = (t_map){.points = points, .rows = 0, .cols = 0};
+	context.camera = (t_camera){0, 0, 0, 200};
 
 	// Add key hook
 	mlx_key_hook(context.win, key_hook, &context);

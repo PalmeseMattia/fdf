@@ -58,13 +58,19 @@ void draw_line(t_context context, t_point point0, t_point point1)
 	}
 }
 
-t_point	project_point(t_point point, float fov)
+t_point	project_point(t_point point, float distance)
 {
 	t_point	result;
-	float	dividend;
+	float	z_projection;
+	float	z;
 
-	result.x = (WIDTH / 2) + (fov * point.x) / (fov + point.z);
-	result.y = (HEIGHT / 2) + (fov * point.y) / (fov + point.z);
+	if (point.z == 0)
+		z = 1e-6;
+	else
+		z = point.z;
+	z_projection = distance / z;
+	result.x = (point.x * z_projection) + (WIDTH / 2);
+	result.y = (point.y * z_projection) + (HEIGHT / 2);
 	result.z = point.z;
 	return (result);
 }

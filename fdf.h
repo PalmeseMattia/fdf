@@ -9,6 +9,14 @@
 #define WIDTH 1920
 #define HEIGHT 1080
 
+typedef struct s_camera
+{
+	float x;
+	float y;
+	float z;
+	float	distance;
+}	t_camera;
+
 typedef struct s_pixel
 {
 	unsigned char	*r;
@@ -33,14 +41,15 @@ typedef struct s_map
 
 typedef struct s_context
 {
-	void	*mlx;
-	void	*win;
-	void	*image;
-	void	*pixels;
+	void		*mlx;
+	void		*win;
+	void		*image;
+	void		*pixels;
 	int		bits_per_pixel;
 	int		size_line;
 	int		endian;
-	t_map	map;
+	t_map		map;
+	t_camera	camera;
 }	t_context;
 
 typedef struct s_image
