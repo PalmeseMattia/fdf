@@ -1,4 +1,4 @@
-#include "fdf.h"
+#include "../include/fdf.h"
 
 #define ESC 65307
 #define ON_DESTROY 17
@@ -34,36 +34,6 @@ int key_hook(int keycode, t_context *context)
 			context -> camera.distance -= 20;
 	}
 	return 0;
-}
-
-t_point rotate_x(t_point point, float angle)
-{
-	t_point result;
-
-	result.x = point.x;
-	result.y = (int)((point.y * cos(angle)) - (point.z * sin(angle)));
-	result.z = (int)((point.y * sin(angle)) + (point.z * cos(angle)));
-	return result;
-}
-
-t_point rotate_y(t_point point, float angle)
-{
-	t_point result;
-
-	result.x = (int)((point.x * cos(angle)) + (point.z * sin(angle)));
-	result.y = point.y;
-	result.z = (int)(-(point.x * sin(angle)) + (point.z * cos(angle)));
-	return result;
-}
-
-t_point rotate_z(t_point point, float angle)
-{
-	t_point result;
-
-	result.x = (int)((point.x * cos(angle)) - (point.y * sin(angle)));
-	result.y = (int)((point.x * sin(angle)) + (point.y * cos(angle)));
-	result.z = point.z;
-	return result;
 }
 
 int loop_hook(t_context *context)

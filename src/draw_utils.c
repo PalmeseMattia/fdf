@@ -1,4 +1,4 @@
-#include "fdf.h"
+#include "../include/fdf.h"
 
 t_pixel	get_pixel(unsigned char *p_pixel)
 {
@@ -11,15 +11,15 @@ t_pixel	get_pixel(unsigned char *p_pixel)
 	return (result);
 }
 
-void draw_pixel(t_context context, t_point point, int color)
+void draw_pixel(void *pixels, t_point point, int color)
 {
 	if (point.x < WIDTH && point.x > 0 && point.y < HEIGHT && point.y > 0)
 	{
 		int byte_per_pixel = 4;
 		int column = (point.x * byte_per_pixel);
-		int row = (point.y * context.size_line);
+		int row = (point.y * byte_per_pixel * WIDTH);
 
-		t_pixel pixel = get_pixel(context.pixels + row + column);
+		t_pixel pixel = get_pixel(pixels + row + column);
 		*pixel.a =	(color >> 24)	& 0xFF;
 		*pixel.r =	(color >> 16)	& 0xFF;
 		*pixel.g =	(color >> 8)	& 0xFF;
@@ -27,7 +27,7 @@ void draw_pixel(t_context context, t_point point, int color)
 	}
 }
 
-void draw_line(t_context context, t_point point0, t_point point1)
+void draw_line(void *pixels, t_point point0, t_point point1)
 {
 	int dx = abs(point1.x - point0.x);
 	int sx = point0.x < point1.x ? 1 : -1;
@@ -37,7 +37,7 @@ void draw_line(t_context context, t_point point0, t_point point1)
 	
 	while (1)
 	{
-		draw_pixel(context, point0, 0xFFFFFFFF); //TODO: implement plot
+		draw_pixel(pixels, point0, 0xFFFFFFFF); //TODO: implement plot
 		if (point0.x == point1.x && point0.y == point1.y)
 			break ;
 		int e2 = 2 * error;
@@ -65,32 +65,56 @@ t_point	project_point(t_point point, float distance)
 	float	z;
 
 	if (point.z == 0)
-		z = 1e-6;
+	{
+		result.x = point.x + (WIDTH / 2);
+		result.y = point.y + (HEIGHT / 2);
+	}
 	else
-		z = point.z;
-	z_projection = distance / z;
-	result.x = (point.x * z_projection) + (WIDTH / 2);
-	result.y = (point.y * z_projection) + (HEIGHT / 2);
+	{
+		z_projection = distance / point.z;
+		result.x = (int)(point.x * z_projection) + (WIDTH / 2);
+		result.y = (int)(point.y * z_projection) + (HEIGHT / 2);
+	}
 	result.z = point.z;
 	return (result);
 }
 
-void draw_map(t_context context)
+void draw_map(t_map map, void *pixels)
 {
-	t_map map = context.map;
 	for (int i = 0; i < map.rows * map.cols; i++) {
 		t_point point = map.points[i];
-		printf("X: %d, Y: %d, Z: %d\n", point.x, point.y, point.z);
-		draw_pixel(context, point, 0xFFFFFFFF);
+		//printf("X: %d, Y: %d, Z: %d\n", point.x, point.y, point.z);
+		draw_pixel(pixels, point, 0xFFFFFFFF);
 		//Draw line to the point at the right
 		if (i % map.cols < (map.cols) - 1) {
-			draw_line(context, point, map.points[i + 1]);
+			draw_line(pixels, point, map.points[i + 1]);
 		}
 		//Draw line to the point at the bottom
-		if (i / map.rows < (map.rows) - 1) {
-			draw_line(context, point, map.points[i + map.cols]);
+		if (i / map.cols < (map.rows) - 1) {
+			draw_line(pixels, point, map.points[i + map.cols]);
 		}
 	}
+}
 
+t_point scale_point(double scale, t_point point)
+{
+	t_point result;
 
+	result.x = point.x * scale;
+	result.y = point.y * scale;
+	result.z = point.z * scale;
+	return (result);
+}
+
+t_point smooth_point(double smoothness, t_point point)
+{
+	t_point result;
+
+	result.x = point.x;
+	result.y = point.y;
+	if (point.z > 0)
+		result.z = point.z - 1/smoothness;
+	else
+		result.z = point.z + 1/smoothness;
+	return (result);
 }
