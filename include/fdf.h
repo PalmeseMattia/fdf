@@ -16,7 +16,6 @@ typedef struct s_camera
 	float x;
 	float y;
 	float z;
-	float	distance;
 }	t_camera;
 
 typedef struct s_pixel
@@ -29,9 +28,10 @@ typedef struct s_pixel
 
 typedef struct s_point
 {
-	int x;
-	int y;
-	int z;
+	double x;
+	double y;
+	double z;
+	double color;
 }	t_point;
 
 typedef struct s_map

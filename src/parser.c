@@ -23,7 +23,12 @@ void parse_map(char *filename, t_context *context)
 		values = ft_split(line, ' ');
 		char **tmp = values;
 		while(*values) {
-			t_point point = (t_point){.x = (i % map.cols), .y = (i / map.cols), .z = ft_atoi(*values)};
+			t_point point = (t_point){
+				.x = (i % map.cols),
+				.y = (i / map.cols),
+				.z = ft_atoi(*values),
+				.color = 0xFFFFFFFF};
+			//printf("Parsed point %d, X: %f, Y: %f, Z: %f\n", i, point.x, point.y, point.z);
 			context -> map.points[i++] = point;
 			free(*(values));
 			values++;

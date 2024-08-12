@@ -10,8 +10,8 @@
 
 #define W 119
 #define S 115
-#define PLUS 43
-#define MINUS 45
+#define PLUS 236
+#define MINUS 39
 
 int key_hook(int keycode, t_context *context)
 {
@@ -29,18 +29,12 @@ int key_hook(int keycode, t_context *context)
 		context -> camera.x -= 40;
 	else if (keycode == RIGHT)
 		context -> camera.x += 40;
-	else if (keycode == W)
-		context -> camera.distance += 50;
-	else if (keycode == S) {
-		if (context -> camera.distance > 0)
-			context -> camera.distance -= 20;
-	}
 	else if (keycode == PLUS)
-		context -> scale+=0.1;
+		context -> scale += 1;
 	else if (keycode == MINUS)
 	{
 		if (context -> scale > 0)
-			context -> scale-=0.1;
+			context -> scale -= 1;
 	}
 	return 0;
 }
@@ -52,45 +46,25 @@ int loop_hook(t_context *context)
 	static float rotation = 1.0;
 	static t_point *points = NULL;
 	
-	t_point center = { .x = 0, .y = 0, .z = 0 };
-	for (int i = 0; i < map_size; i++)
-	{
-		center.x += context->map.points[i].x;
-		center.y += context->map.points[i].y;
-		center.z += context->map.points[i].z;
-	}
-	center.x /= map_size;
-	center.y /= map_size;
-	center.z /= map_size;
-
-
 	if (!points)
 		points = malloc(map_size * sizeof(t_point));
 	for (int i = 0; i < map_size; i++)
 	{
 		t_point p = context->map.points[i];
 		
-		// Translate to origin
-		p.x -= center.x;
-		p.y -= center.y;
-		p.z -= center.z;
+		// Scale
+		p = scale_point(context -> scale, p);
 		
-		//rotate point	
-		//p = rotate_x(p, rotation);
-		
-		// Translate back
-		p.x += center.x;
-		p.y += center.y;
-		p.z += center.z;
+		// Rotate
+		p = rotate_x(p, 45);
+		p = rotate_y(p, rotation);
 
 		// Add camera setoff
 		p.x += context -> camera.x;
 		p.y += context -> camera.y;
 		p.z += context -> camera.z;
 		
-		p = scale_point(context -> scale, p);
-		//p = smooth_point(context -> smoothness, p);
-		points[i] = project_point(p, context -> camera.distance);
+		points[i] = p;
 	}
 
 	// Clear image
@@ -136,27 +110,30 @@ int main(int argc, char** argv)
 	context.image = mlx_new_image(context.mlx, WIDTH, HEIGHT);
 	context.pixels = mlx_get_data_addr(context.image, &context.bits_per_pixel, &context.size_line, &context.endian);
 
-	// Parse the map
+	// Get map size
 	context.map = (t_map){.points = NULL, .rows = 0, .cols = 0};
 	get_map_size(filename, &context.map.rows, &context.map.cols);
 	printf("ROWS: %d COLS: %d\n", context.map.rows, context.map.cols);
+	// Alloc points
 	context.map.points = (t_point *)malloc(sizeof(t_point) * (context.map.rows * context.map.cols));
 	if (context.map.points == NULL) {
 		perror("Failed to allocate map!");
 		exit(EXIT_FAILURE);
 	}
+	// Parse the map
+	printf("Parsing the map\n");
 	parse_map(filename, &context);
 	for(int i = 0; i < context.map.rows * context.map.cols; i++) {
 		t_point p = context.map.points[i];
-		printf("I: %d X: %d, Y: %d, Z: %d\n", i, p.x, p.y, p.z);
+		//printf("I: %f X: %f, Y: %f, Z: %f\n", i, p.x, p.y, p.z);
 	}
-	context.scale = 1.0;
+	context.scale = 10.0;
 	context.smoothness = 1.0;
 
 	//free(context.map.points);
 	draw_map(context.map, context.pixels);
 	// Create camera
-	context.camera = (t_camera){.x = 0, .y = 0, .z = 0, .distance = 20};
+	context.camera = (t_camera){.x = 0, .y = 0, .z = 0};
 
 	mlx_put_image_to_window(context.mlx, context.win, context.image, 0, 0);
 	// Add key hook

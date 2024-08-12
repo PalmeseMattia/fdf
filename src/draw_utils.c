@@ -37,7 +37,7 @@ void draw_line(void *pixels, t_point point0, t_point point1)
 	
 	while (1)
 	{
-		draw_pixel(pixels, point0, 0xFFFFFFFF); //TODO: implement plot
+		draw_pixel(pixels, point0, 0xFFFF00FF); //TODO: implement plot
 		if (point0.x == point1.x && point0.y == point1.y)
 			break ;
 		int e2 = 2 * error;
@@ -56,27 +56,6 @@ void draw_line(void *pixels, t_point point0, t_point point1)
 			point0.y = point0.y + sy;
 		}
 	}
-}
-
-t_point	project_point(t_point point, float distance)
-{
-	t_point	result;
-	float	z_projection;
-	float	z;
-
-	if (point.z == 0)
-	{
-		result.x = point.x + (WIDTH / 2);
-		result.y = point.y + (HEIGHT / 2);
-	}
-	else
-	{
-		z_projection = distance / point.z;
-		result.x = (int)(point.x * z_projection) + (WIDTH / 2);
-		result.y = (int)(point.y * z_projection) + (HEIGHT / 2);
-	}
-	result.z = point.z;
-	return (result);
 }
 
 void draw_map(t_map map, void *pixels)
@@ -99,22 +78,10 @@ void draw_map(t_map map, void *pixels)
 t_point scale_point(double scale, t_point point)
 {
 	t_point result;
-
+	//printf("Original: X: %f, Y: %f, Z: %f\n", point.x, point.y, point.z);
 	result.x = point.x * scale;
 	result.y = point.y * scale;
 	result.z = point.z * scale;
-	return (result);
-}
-
-t_point smooth_point(double smoothness, t_point point)
-{
-	t_point result;
-
-	result.x = point.x;
-	result.y = point.y;
-	if (point.z > 0)
-		result.z = point.z - 1/smoothness;
-	else
-		result.z = point.z + 1/smoothness;
+	//printf("Scaled: X: %f, Y: %f, Z: %f\n", result.x, result.y, result.z);
 	return (result);
 }
