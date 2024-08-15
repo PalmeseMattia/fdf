@@ -12,6 +12,10 @@
 #define S 115
 #define PLUS 236
 #define MINUS 39
+#define SCROLL_UP 4
+#define SCROLL_DOWN 5
+#define RIGHT_CLICK 1
+#define LEFT_CLICK 3
 
 int key_hook(int keycode, t_context *context)
 {
@@ -29,13 +33,21 @@ int key_hook(int keycode, t_context *context)
 		context -> camera.x -= 40;
 	else if (keycode == RIGHT)
 		context -> camera.x += 40;
-	else if (keycode == PLUS)
+	return 0;
+}
+
+int mouse_hook(int button, int x, int y, t_context *context)
+{
+	printf("Key pressed: %d at X: %d and Y: %d\n", button, x, y);
+	if (button == SCROLL_UP)
 		context -> scale += 1;
-	else if (keycode == MINUS)
+	else if (button == SCROLL_DOWN)
 	{
 		if (context -> scale > 0)
 			context -> scale -= 1;
 	}
+	else if (button == LEFT_CLICK)
+		context -> camera = (t_camera){.x = x, .y = y};
 	return 0;
 }
 
@@ -51,32 +63,26 @@ int loop_hook(t_context *context)
 	for (int i = 0; i < map_size; i++)
 	{
 		t_point p = context->map.points[i];
-		
 		// Scale
 		p = scale_point(context -> scale, p);
-		
 		// Rotate
-		p = rotate_x(p, 45);
+		p = rotate_x(p, rotation);
 		p = rotate_y(p, rotation);
-
+		p = rotate_z(p, rotation);
 		// Add camera setoff
 		p.x += context -> camera.x;
 		p.y += context -> camera.y;
-		p.z += context -> camera.z;
-		
 		points[i] = p;
 	}
-
 	// Clear image
 	for (int i = 0; i < (context->size_line * HEIGHT); i++)
 	{
 		*(char *)((context->pixels) + i) = 0x00;
 	}
-
 	draw_map((t_map){.points = points, .rows = map.rows, .cols = map.cols}, context -> pixels);
 	mlx_put_image_to_window(context->mlx, context->win, context->image, 0, 0);
 	rotation += 0.05;
-	usleep(20000);
+	usleep(40000);
 	return 0;
 }
 
@@ -133,11 +139,12 @@ int main(int argc, char** argv)
 	//free(context.map.points);
 	draw_map(context.map, context.pixels);
 	// Create camera
-	context.camera = (t_camera){.x = 0, .y = 0, .z = 0};
+	context.camera = (t_camera){.x = 0, .y = 0};
 
 	mlx_put_image_to_window(context.mlx, context.win, context.image, 0, 0);
 	// Add key hook
 	mlx_key_hook(context.win, key_hook, &context);
+	mlx_mouse_hook(context.win, mouse_hook, &context);
 	mlx_hook(context.win, ON_DESTROY, 0, destroy_hook, &context);
 	mlx_loop_hook(context.mlx, loop_hook, &context);
 	mlx_loop(context.mlx);

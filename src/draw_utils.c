@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/15 15:07:10 by dpalmese          #+#    #+#             */
+/*   Updated: 2024/08/15 15:14:46 by dpalmese         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/fdf.h"
 
 t_pixel	get_pixel(unsigned char *p_pixel)
@@ -11,33 +23,42 @@ t_pixel	get_pixel(unsigned char *p_pixel)
 	return (result);
 }
 
-void draw_pixel(void *pixels, t_point point, int color)
+void	draw_pixel(void *pixels, t_point point, int color)
 {
+	int	byte_per_pixel;
+	int	column;
+	int	row;
+	t_pixel	pixel;
+
 	if (point.x < WIDTH && point.x > 0 && point.y < HEIGHT && point.y > 0)
 	{
-		int byte_per_pixel = 4;
-		int column = (point.x * byte_per_pixel);
-		int row = (point.y * byte_per_pixel * WIDTH);
-
-		t_pixel pixel = get_pixel(pixels + row + column);
-		*pixel.a =	(color >> 24)	& 0xFF;
-		*pixel.r =	(color >> 16)	& 0xFF;
-		*pixel.g =	(color >> 8)	& 0xFF;
-		*pixel.b =	color		& 0xFF;
+		byte_per_pixel = 4;
+		column = ((int)point.x * byte_per_pixel);
+		row = ((int)point.y * byte_per_pixel * WIDTH);
+		pixel = get_pixel(pixels + row + column);
+		*pixel.a = (color >> 24) & 0xFF;
+		*pixel.r = (color >> 16) & 0xFF;
+		*pixel.g = (color >> 8) & 0xFF;
+		*pixel.b = color & 0xFF;
 	}
 }
 
-void draw_line(void *pixels, t_point point0, t_point point1)
+void	draw_line(void *pixels, t_point point0, t_point point1)
 {
-	int dx = abs(point1.x - point0.x);
-	int sx = point0.x < point1.x ? 1 : -1;
-	int dy = -abs(point1.y - point0.y);
-	int sy = point0.y < point1.y ? 1 : -1;
-	int error = dx + dy;
-	
+	int	dx;
+	int	sx;
+	int	dy;
+	int	sy;
+	int	error;
+
+	dx = abs(point1.x - point0.x);
+	sx = point0.x < point1.x ? 1 : -1;
+	dy = -abs(point1.y - point0.y);
+	sy = point0.y < point1.y ? 1 : -1;
+	error = dx + dy;
 	while (1)
 	{
-		draw_pixel(pixels, point0, 0xFFFF00FF); //TODO: implement plot
+		draw_pixel(pixels, point0, 0xFFFF00FF);
 		if (point0.x == point1.x && point0.y == point1.y)
 			break ;
 		int e2 = 2 * error;
@@ -75,13 +96,12 @@ void draw_map(t_map map, void *pixels)
 	}
 }
 
-t_point scale_point(double scale, t_point point)
+t_point	scale_point(double scale, t_point point)
 {
-	t_point result;
-	//printf("Original: X: %f, Y: %f, Z: %f\n", point.x, point.y, point.z);
+	t_point	result;
+	
 	result.x = point.x * scale;
 	result.y = point.y * scale;
 	result.z = point.z * scale;
-	//printf("Scaled: X: %f, Y: %f, Z: %f\n", result.x, result.y, result.z);
 	return (result);
 }

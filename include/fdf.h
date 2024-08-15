@@ -15,7 +15,6 @@ typedef struct s_camera
 {
 	float x;
 	float y;
-	float z;
 }	t_camera;
 
 typedef struct s_pixel
@@ -77,5 +76,6 @@ void	parse_map(char *filename, t_context *context);
 void get_map_size(char *filename, int *rows, int*cols);
 t_point scale_point(double scale, t_point point);
 t_point smooth_point(double smoothness, t_point point);
+int mouse_hook(int button, int x, int y, t_context *context);
 
 #endif

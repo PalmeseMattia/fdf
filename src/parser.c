@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/15 14:34:20 by dpalmese          #+#    #+#             */
+/*   Updated: 2024/08/15 14:37:27 by dpalmese         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include "../include/fdf.h"
 /**
@@ -7,28 +19,28 @@
  * - The elements are numerical values separated only by whitespaces.
  * - There is at least one line.
  */
-void parse_map(char *filename, t_context *context)
+void	parse_map(char *filename, t_context *context)
 {
 	char	**values;
 	char	*line;
 	t_map	map;
 	int	fd;
 	int	i;
-	
+
 	i = 0;
 	map = context -> map;
 	fd = open(filename, O_RDONLY);
-	while(line = get_next_line(fd)) {
+	while (line = get_next_line(fd))
+	{
 		printf("%s", line);
 		values = ft_split(line, ' ');
 		char **tmp = values;
-		while(*values) {
-			t_point point = (t_point){
-				.x = (i % map.cols),
+		while (*values)
+		{
+			t_point point = (t_point){.x = (i % map.cols), 
 				.y = (i / map.cols),
 				.z = ft_atoi(*values),
 				.color = 0xFFFFFFFF};
-			//printf("Parsed point %d, X: %f, Y: %f, Z: %f\n", i, point.x, point.y, point.z);
 			context -> map.points[i++] = point;
 			free(*(values));
 			values++;
@@ -48,12 +60,14 @@ void get_map_size(char *filename, int *rows, int *cols)
 	int	 i;
 
 	fd = open(filename, O_RDONLY);
-	if (fd < 0) {
+	if (fd < 0)
+	{
 		perror("Error while opening file!");
 		exit(EXIT_FAILURE);
 	}
 	line = get_next_line(fd);
-	if (line != NULL) {
+	if (line != NULL)
+	{
 		i = 0;
 		values = ft_split(line, ' ');
 		while (values[i] != NULL)
@@ -66,10 +80,13 @@ void get_map_size(char *filename, int *rows, int *cols)
 		free(values);
 		free(line);
 	}
-	while ((line = get_next_line(fd))) {
+	line = get_next_line(fd);
+	while ((line))
+	{
 		*rows += 1;
+		line = get_next_line(fd);
 		free(line);
 	}
+	free(line);
 	close(fd);
 }
-
