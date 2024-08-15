@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 14:34:20 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/15 14:37:27 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:34:07 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,22 @@ void	parse_map(char *filename, t_context *context)
 	i = 0;
 	map = context -> map;
 	fd = open(filename, O_RDONLY);
-	while (line = get_next_line(fd))
+	line = get_next_line(fd);
+	while (line)
 	{
 		printf("%s", line);
 		values = ft_split(line, ' ');
 		char **tmp = values;
 		while (*values)
 		{
-			t_point point = (t_point){.x = (i % map.cols), 
-				.y = (i / map.cols),
-				.z = ft_atoi(*values),
-				.color = 0xFFFFFFFF};
+			t_point point = new_point(i % map.cols, i / map.cols, ft_atoi(*values), 0xFFFFFFFF);
 			context -> map.points[i++] = point;
 			free(*(values));
 			values++;
 		}
 		free(tmp);
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 }

@@ -77,5 +77,6 @@ void get_map_size(char *filename, int *rows, int*cols);
 t_point scale_point(double scale, t_point point);
 t_point smooth_point(double smoothness, t_point point);
 int mouse_hook(int button, int x, int y, t_context *context);
+t_point	new_point(double x, double y, double z, double color);
 
 #endif
