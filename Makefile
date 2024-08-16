@@ -3,7 +3,7 @@ CC = cc
 DEBUG_FLAGS = -g
 FLAGS = $(DEBUG_FLAGS) #-Wall -Wextra -Werror
 
-SRCS = src/main.c src/draw_utils.c src/rotations.c src/parser.c src/point.c
+SRCS = src/main.c src/draw_utils.c src/rotations.c src/parser.c src/point.c src/bresenham.c
 OBJS = $(SRCS:.c=.o)
 
 EXEC = fdf

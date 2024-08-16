@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 15:07:10 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/16 11:57:57 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/16 15:49:25 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,47 +43,6 @@ void	draw_pixel(void *pixels, t_point point, int color)
 	}
 }
 
-void	draw_line(void *pixels, t_point point0, t_point point1)
-{
-	int	dx;
-	int	sx;
-	int	dy;
-	int	sy;
-	int	error;
-
-	dx = abs(point1.x - point0.x);
-	if (point0.x < point1.x)
-		sx = 1;
-   	else
-		sx = -1;
-	dy = -abs(point1.y - point0.y);
-	if(point0.y < point1.y) 
-		sy = 1;
-	else
-		sy = -1;
-	error = dx + dy;
-	while (1)
-	{
-		draw_pixel(pixels, point0, 0xFFFF00FF);
-		if (point0.x == point1.x && point0.y == point1.y)
-			break ;
-		if (2 * error >= dy)
-		{
-			if (point0.x == point1.x)
-				break ;
-			error = error + dy;
-			point0.x = point0.x + sx;
-		}
-		if (2 * error <= dx)
-		{
-			if (point0.y == point1.y)
-				break ;
-			error = error + dx;
-			point0.y = point0.y + sy;
-		}
-	}
-}
-
 void	draw_map(t_map map, void *pixels)
 {
 	int		i;
@@ -100,14 +59,4 @@ void	draw_map(t_map map, void *pixels)
 			draw_line(pixels, point, map.points[i + map.cols]);
 		i++;
 	}
-}
-
-t_point	scale_point(double scale, t_point point)
-{
-	t_point	result;
-
-	result.x = point.x * scale;
-	result.y = point.y * scale;
-	result.z = point.z * scale;
-	return (result);
 }
