@@ -59,7 +59,7 @@ int loop_hook(t_context *context)
 	static t_point *points = NULL;
 	
 	if (!points)
-		points = malloc(map_size * sizeof(t_point));
+			points = malloc(map_size * sizeof(t_point));
 	for (int i = 0; i < map_size; i++)
 	{
 		t_point p = context->map.points[i];
@@ -118,8 +118,11 @@ int main(int argc, char** argv)
 
 	// Get map size
 	context.map = (t_map){.points = NULL, .rows = 0, .cols = 0};
-	get_map_size(filename, &context.map.rows, &context.map.cols);
-	printf("ROWS: %d COLS: %d\n", context.map.rows, context.map.cols);
+	// TODO: check file exists
+	int fd = open(filename, O_RDONLY);
+	get_map_size(fd, &context.map.rows, &context.map.cols);
+	close(fd);
+	fd = open(filename, O_RDONLY);
 	// Alloc points
 	context.map.points = (t_point *)malloc(sizeof(t_point) * (context.map.rows * context.map.cols));
 	if (context.map.points == NULL) {
@@ -128,7 +131,7 @@ int main(int argc, char** argv)
 	}
 	// Parse the map
 	printf("Parsing the map\n");
-	parse_map(filename, &context);
+	parse_map(fd, &context.map);
 	for(int i = 0; i < context.map.rows * context.map.cols; i++) {
 		t_point p = context.map.points[i];
 		//printf("I: %f X: %f, Y: %f, Z: %f\n", i, p.x, p.y, p.z);

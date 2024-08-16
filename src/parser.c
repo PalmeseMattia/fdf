@@ -6,12 +6,13 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 14:34:20 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/15 15:34:07 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:41:32 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "../include/fdf.h"
+#define C 0xFFFFFFFF
 /**
  * Parse a map from a .fdf file
  * We assume that the file is correctly formatted, meaning that:
@@ -19,73 +20,55 @@
  * - The elements are numerical values separated only by whitespaces.
  * - There is at least one line.
  */
-void	parse_map(char *filename, t_context *context)
+void	parse_map(int fd, t_map *m)
 {
-	char	**values;
+	char	**v;
 	char	*line;
-	t_map	map;
-	int	fd;
-	int	i;
+	int		i;
+	int		j;
+	t_point	p;
 
 	i = 0;
-	map = context -> map;
-	fd = open(filename, O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
 	{
-		printf("%s", line);
-		values = ft_split(line, ' ');
-		char **tmp = values;
-		while (*values)
+		j = 0;
+		v = ft_split(line, ' ');
+		while (*(v + j) != NULL)
 		{
-			t_point point = new_point(i % map.cols, i / map.cols, ft_atoi(*values), 0xFFFFFFFF);
-			context -> map.points[i++] = point;
-			free(*(values));
-			values++;
+			p = new_point(i % m -> cols, i / m -> cols, ft_atoi(*(v + j)), C);
+			m -> points[i++] = p;
+			free(*(v + j++));
 		}
-		free(tmp);
 		free(line);
 		line = get_next_line(fd);
+		free(v);
 	}
-	close(fd);
 }
 
-
-void get_map_size(char *filename, int *rows, int *cols)
+void	get_map_size(int fd, int *rows, int *cols)
 {
 	char	*line;
 	char	**values;
-	int	 fd;
-	int	 i;
+	int		i;
 
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-	{
-		perror("Error while opening file!");
-		exit(EXIT_FAILURE);
-	}
+	i = 0;
 	line = get_next_line(fd);
-	if (line != NULL)
+	values = ft_split(line, ' ');
+	while (values[i])
 	{
-		i = 0;
-		values = ft_split(line, ' ');
-		while (values[i] != NULL)
-		{
-			*cols += 1;
-			free(values[i]);
-			i++;
-		}
+		*cols += 1;
+		free(values[i++]);
+	}
+	*rows += 1;
+	free(values);
+	free(line);
+	line = get_next_line(fd);
+	while (line)
+	{
 		*rows += 1;
-		free(values);
 		free(line);
-	}
-	line = get_next_line(fd);
-	while ((line))
-	{
-		*rows += 1;
 		line = get_next_line(fd);
-		free(line);
 	}
 	free(line);
-	close(fd);
 }
