@@ -82,7 +82,7 @@ int loop_hook(t_context *context)
 	draw_map((t_map){.points = points, .rows = map.rows, .cols = map.cols}, context -> pixels);
 	mlx_put_image_to_window(context->mlx, context->win, context->image, 0, 0);
 	rotation += 0.05;
-	usleep(40000);
+	usleep(20000);
 	return 0;
 }
 
