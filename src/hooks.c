@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:06:03 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/17 19:01:35 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/17 22:04:52 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,9 @@ int	mouse_hook(int button, int x, int y, t_context *context)
 
 int	loop_hook(t_context *context)
 {
+	static t_point	*points = NULL;
 	t_map			map;
 	t_point			p;
-	static float	rotation = 1.0;
-	static t_point	*points = NULL;
 	int				i;
 
 	i = 0;
@@ -59,19 +58,18 @@ int	loop_hook(t_context *context)
 	while (i < map.rows * map.cols)
 	{
 		p = context->map.points[i];
-		p = scale_point(context -> scale, p);	// Scale
-		p = rotate_x(p, rotation);				// Rotate
-		p = rotate_y(p, rotation);
-		p = rotate_z(p, rotation);
-		p.x += context -> camera.x;				//Traslate
+		p = scale_point(context -> scale, p);
+		p = rotate_x(p, context -> rotations.x);
+		p = rotate_y(p, context -> rotations.y);
+		p = rotate_z(p, context -> rotations.z);
+		p.x += context -> camera.x;
 		p.y += context -> camera.y;
 		points[i++] = p;
 	}
-	clean_map(context, (t_map){.points = points, .rows = map.rows, .cols = map.cols});
-	draw_map((t_map){.points = points, .rows = map.rows, .cols = map.cols}, context -> pixels);
+	map.points = points;
+	clean_map(context, map);
+	draw_map(map, context -> pixels);
 	mlx_put_image_to_window(context->mlx, context->win, context->image, 0, 0);
-	rotation += 0.05;
-	usleep(20000);
 	return (0);
 }
 
