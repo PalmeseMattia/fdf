@@ -10,6 +10,31 @@
 
 #define WIDTH 1920
 #define HEIGHT 1080
+// Close events
+#define ESC 65307
+#define ON_DESTROY 17
+// Arrows
+#define UP 65362
+#define DOWN 65364
+#define LEFT 65361
+#define RIGHT 65363
+// Keyword
+#define W 119
+#define S 115
+#define PLUS 236
+#define MINUS 39
+// Mouse
+#define SCROLL_UP 4
+#define SCROLL_DOWN 5
+#define RIGHT_CLICK 1
+#define LEFT_CLICK 3
+
+typedef struct s_rotations
+{
+	double	x;
+	double	y;
+	double	z;
+}	t_rotations;
 
 typedef struct s_camera
 {
@@ -46,13 +71,13 @@ typedef struct s_context
 	void		*win;
 	void		*image;
 	void		*pixels;
-	int		bits_per_pixel;
-	int		size_line;
-	int		endian;
+	t_rotations	rotations;
 	t_map		map;
 	t_camera	camera;
 	double		scale;
-	double		smoothness;
+	int			bits_per_pixel;
+	int			size_line;
+	int			endian;
 }	t_context;
 
 typedef struct s_image
@@ -78,5 +103,10 @@ t_point scale_point(double scale, t_point point);
 t_point smooth_point(double smoothness, t_point point);
 int mouse_hook(int button, int x, int y, t_context *context);
 t_point	new_point(double x, double y, double z, double color);
+// Hooks
+int	key_hook(int keycode, t_context *context);
+int	mouse_hook(int button, int x, int y, t_context *context);
+int	loop_hook(t_context *context);
+int destroy_hook(t_context *context);
 
 #endif
