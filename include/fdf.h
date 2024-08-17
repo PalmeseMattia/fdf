@@ -108,5 +108,6 @@ int	key_hook(int keycode, t_context *context);
 int	mouse_hook(int button, int x, int y, t_context *context);
 int	loop_hook(t_context *context);
 int destroy_hook(t_context *context);
+void clean_map(t_context *context, t_map map);
 
 #endif

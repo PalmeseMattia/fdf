@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:06:03 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/17 18:14:20 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/17 19:01:35 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,7 @@ int	loop_hook(t_context *context)
 		p.y += context -> camera.y;
 		points[i++] = p;
 	}
-	for (int i = 0; i < (context->size_line * HEIGHT); i++)
-	{
-		*(char *)((context->pixels) + i) = 0x00;
-	}
+	clean_map(context, (t_map){.points = points, .rows = map.rows, .cols = map.cols});
 	draw_map((t_map){.points = points, .rows = map.rows, .cols = map.cols}, context -> pixels);
 	mlx_put_image_to_window(context->mlx, context->win, context->image, 0, 0);
 	rotation += 0.05;

@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 15:07:10 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/16 15:49:25 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/17 19:01:08 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,18 @@ void	draw_map(t_map map, void *pixels)
 			draw_line(pixels, point, map.points[i + 1]);
 		if (i / map.cols < (map.rows) - 1)
 			draw_line(pixels, point, map.points[i + map.cols]);
+		i++;
+	}
+}
+
+void clean_map(t_context *context, t_map map)
+{
+	int i;
+
+	i = 0;
+	while (i < context->size_line * HEIGHT)
+	{
+		*(char *)((context->pixels) + i) = 0x00;
 		i++;
 	}
 }
