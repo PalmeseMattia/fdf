@@ -6,10 +6,9 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:53:25 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/17 18:13:58 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/18 00:31:53 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../include/fdf.h"
 
 int	main(int argc, char** argv)
@@ -63,6 +62,7 @@ int	main(int argc, char** argv)
 	mlx_mouse_hook(context.win, mouse_hook, &context);
 	mlx_hook(context.win, ON_DESTROY, 0, destroy_hook, &context);
 	mlx_loop_hook(context.mlx, loop_hook, &context);
+	mlx_hook(context.win, 2, 1, key_press, &context);
 	mlx_loop(context.mlx);
 	return 0;
 }

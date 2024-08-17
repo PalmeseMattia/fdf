@@ -1,7 +1,7 @@
 #ifndef FDF_H
 # define FDF_H
 
-#include <mlx.h>
+#include "../mlx_linux/mlx.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -21,6 +21,10 @@
 // Keyword
 #define W 119
 #define S 115
+#define A 97
+#define D 100
+#define Q 113
+#define E 101
 #define PLUS 236
 #define MINUS 39
 // Mouse
@@ -78,6 +82,7 @@ typedef struct s_context
 	int			bits_per_pixel;
 	int			size_line;
 	int			endian;
+	int			spinning;
 }	t_context;
 
 typedef struct s_image
@@ -109,5 +114,7 @@ int	mouse_hook(int button, int x, int y, t_context *context);
 int	loop_hook(t_context *context);
 int destroy_hook(t_context *context);
 void clean_map(t_context *context, t_map map);
+int key_press(int keycode, t_context *context);
+t_point	rotate_point(t_rotations rotations, t_point point);
 
 #endif
