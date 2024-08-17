@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 14:32:30 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/15 14:33:52 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/18 01:26:00 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,15 @@ t_point	rotate_z(t_point point, float angle)
 	result.y = (int)((point.x * sin(angle)) + (point.y * cos(angle)));
 	result.z = point.z;
 	return (result);
+}
+
+void	spin(t_context *context, double angle) 
+{
+	if (context -> spinning)
+	{
+		usleep(25000);
+		context -> rotations.x += angle;
+		context -> rotations.y += angle;
+		context -> rotations.z += angle;
+	}
 }

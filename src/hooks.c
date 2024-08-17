@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:06:03 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/18 00:36:57 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/18 01:20:58 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	key_hook(int keycode, t_context *context)
 		context -> camera.x -= 40;
 	else if (keycode == RIGHT)
 		context -> camera.x += 40;
+	else if (keycode == SPACE)
+			context -> spinning = !(context -> spinning);
 	return (0);
 }
 
@@ -59,13 +61,12 @@ int	loop_hook(t_context *context)
 	{
 		p = context->map.points[i];
 		p = scale_point(context -> scale, p);
-		p = rotate_x(p, context -> rotations.x);
-		p = rotate_y(p, context -> rotations.y);
-		p = rotate_z(p, context -> rotations.z);
+		p = rotate_point(context -> rotations, p);
 		p.x += context -> camera.x;
 		p.y += context -> camera.y;
 		points[i++] = p;
 	}
+	spin(context, 0.1);
 	map.points = points;
 	clean_map(context, map);
 	draw_map(map, context -> pixels);
@@ -78,15 +79,15 @@ int key_press(int keycode, t_context *context)
 	printf("Pressed :%d\n", keycode);
 	if (keycode == W)
 		context -> rotations.x += 0.1;
-	if (keycode == S)
+	else if (keycode == S)
 		context -> rotations.x -= 0.1;
-	if (keycode == A)
+	else if (keycode == A)
 		context -> rotations.y -= 0.1;
-	if (keycode == D)
+	else if (keycode == D)
 		context -> rotations.y += 0.1;
-	if (keycode == Q)
+	else if (keycode == Q)
 		context -> rotations.z -= 0.1;
-	if (keycode == E)
+	else if (keycode == E)
 		context -> rotations.z += 0.1;
 	return (0);
 }

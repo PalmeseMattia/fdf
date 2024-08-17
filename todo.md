@@ -1,4 +1,0 @@
-- [x] Remove z from the camera struct.
-- [ ] Add mouse rotation.
-- [ ] Free the points pool inside the loop.
-- [ ] Add color shades

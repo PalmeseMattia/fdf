@@ -18,7 +18,7 @@
 #define DOWN 65364
 #define LEFT 65361
 #define RIGHT 65363
-// Keyword
+// Keystrokes
 #define W 119
 #define S 115
 #define A 97
@@ -27,6 +27,7 @@
 #define E 101
 #define PLUS 236
 #define MINUS 39
+#define SPACE 32
 // Mouse
 #define SCROLL_UP 4
 #define SCROLL_DOWN 5
@@ -116,5 +117,6 @@ int destroy_hook(t_context *context);
 void clean_map(t_context *context, t_map map);
 int key_press(int keycode, t_context *context);
 t_point	rotate_point(t_rotations rotations, t_point point);
+void	spin(t_context *context, double angle);
 
 #endif

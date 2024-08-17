@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:53:25 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/18 00:31:53 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/18 00:47:49 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../include/fdf.h"
@@ -51,6 +51,7 @@ int	main(int argc, char** argv)
 	parse_map(fd, &context.map);
 	
 	context.scale = 10.0;
+	context.spinning = 0;
 	//free(context.map.points);
 	draw_map(context.map, context.pixels);
 	// Create camera
