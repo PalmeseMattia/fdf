@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:06:03 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/18 01:20:58 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/18 02:11:07 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	key_hook(int keycode, t_context *context)
 	else if (keycode == RIGHT)
 		context -> camera.x += 40;
 	else if (keycode == SPACE)
-			context -> spinning = !(context -> spinning);
+		context -> spinning = !(context -> spinning);
 	return (0);
 }
 
@@ -74,9 +74,8 @@ int	loop_hook(t_context *context)
 	return (0);
 }
 
-int key_press(int keycode, t_context *context)
+int	key_press(int keycode, t_context *context)
 {
-	printf("Pressed :%d\n", keycode);
 	if (keycode == W)
 		context -> rotations.x += 0.1;
 	else if (keycode == S)

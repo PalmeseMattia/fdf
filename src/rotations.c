@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 14:32:30 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/18 01:26:00 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/18 02:09:22 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_point	rotate_z(t_point point, float angle)
 	return (result);
 }
 
-void	spin(t_context *context, double angle) 
+void	spin(t_context *context, double angle)
 {
 	if (context -> spinning)
 	{

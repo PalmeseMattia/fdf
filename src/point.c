@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 11:35:37 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/18 00:40:33 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/18 02:10:34 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,10 @@ t_point	scale_point(double scale, t_point point)
 
 t_point	rotate_point(t_rotations rotations, t_point point)
 {
-		t_point	result;
-		result = rotate_x(point, rotations.x);
-		result = rotate_y(result, rotations.y);
-		result = rotate_z(result, rotations.z);
-		return (result);
+	t_point	result;
+
+	result = rotate_x(point, rotations.x);
+	result = rotate_y(result, rotations.y);
+	result = rotate_z(result, rotations.z);
+	return (result);
 }

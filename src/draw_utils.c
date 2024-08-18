@@ -6,7 +6,7 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 15:07:10 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/08/17 19:01:08 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/08/18 02:09:55 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	draw_map(t_map map, void *pixels)
 	}
 }
 
-void clean_map(t_context *context, t_map map)
+void	clean_map(t_context *context, t_map map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < context->size_line * HEIGHT)
