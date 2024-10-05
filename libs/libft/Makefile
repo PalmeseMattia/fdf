@@ -20,7 +20,7 @@ SRC =	ft_putchar_fd.c ft_atoi.c ft_putendl_fd.c \
 		ft_memrchr.c ft_memset.c ft_numdigits.c \
 		ft_putnstr_fd.c ft_putnbrbase_fd.c ft_putpointer_fd.c \
 		ft_manage_conversion.c ft_printf.c get_next_line.c \
-		get_next_line_utils.c
+		get_next_line_utils.c ft_freelist.c
 
 BSRCS =	ft_lstdelone.c ft_lstadd_front.c ft_lstadd_back.c \
 		ft_lstclear.c ft_lstnew.c ft_lstlast.c \

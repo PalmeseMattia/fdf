@@ -6,10 +6,11 @@
 /*   By: dpalmese <dpalmese@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:53:25 by dpalmese          #+#    #+#             */
-/*   Updated: 2024/10/05 08:03:31 by dpalmese         ###   ########.fr       */
+/*   Updated: 2024/10/05 08:24:54 by dpalmese         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../include/fdf.h"
+#define MLXD mlx_get_data_addr 
 
 void	set_hooks(t_context *context)
 {
@@ -30,7 +31,7 @@ void	initialize_context(t_context *c)
 	}
 	c -> win = mlx_new_window(c -> mlx, WIDTH, HEIGHT, "FDF");
 	c -> image = mlx_new_image(c -> mlx, WIDTH, HEIGHT);
-	c -> pixels = mlx_get_data_addr(c -> image, &c -> bpp, &c -> size_line, &c -> endian);
+	c -> pixels = MLXD(c -> image, &c -> bpp, &c -> size_line, &c -> endian);
 	c -> map = (t_map){.points = NULL, .rows = 0, .cols = 0};
 	c -> camera = (t_camera){.x = WIDTH / 2, .y = HEIGHT / 2};
 	c -> scale = 10.0;
