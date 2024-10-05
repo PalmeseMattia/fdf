@@ -80,7 +80,7 @@ typedef struct s_context
 	t_map		map;
 	t_camera	camera;
 	double		scale;
-	int			bits_per_pixel;
+	int			bpp;
 	int			size_line;
 	int			endian;
 	int			spinning;
